@@ -3,7 +3,7 @@ import React from 'react';
 const ShopPage = () => {
     return (
         <div>
-            tHis is shop
+            <p className=''>relative</p>
         </div>
     );
 };
