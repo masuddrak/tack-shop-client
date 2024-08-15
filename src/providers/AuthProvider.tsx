@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from 'firebase/auth';
 import { app } from '../firebase/firebase.config';
 import axios from 'axios';
@@ -27,12 +28,16 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const createUser = ({ email }: { email: string }, { password }: { password: string }) => {
+  const createUser = (email,password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-
-  const signIn = ({ email }: { email: string }, { password }: { password: string }) => {
+  const updateUserProfile = (name) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+    })
+  }
+  const signIn = (email,password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
@@ -62,7 +67,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
     return () => unsubscribe();
   }, []);
-
+console.log(user)
   const authInfo = {
     user,
     loading,
@@ -72,6 +77,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signInWithGoogle,
     resetPassword,
     logOut,
+    updateUserProfile
   };
 
   return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;

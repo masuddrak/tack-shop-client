@@ -25,7 +25,7 @@ interface SignUpForm extends HTMLFormElement {
 interface AuthContextType {
   createUser: (email: string, password: string) => Promise<any>;
   signInWithGoogle: () => Promise<any>;
-  updateUserProfile: (name: string, imageUrl: string) => Promise<void>;
+  updateUserProfile: (name: string) => Promise<void>;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -40,25 +40,23 @@ const SignUp = () => {
     const name = form.elements.name.value;
     const email = form.elements.email.value;
     const password = form.elements.password.value;
-    const image = form.elements.image.files?.[0];
+
 
     try {
       setLoading(true);
       // 1. Upload image and get image url
-      const image_url = await imageUpload(image);
-      console.log(image_url);
+ 
 
       // 2. User Registration
       const result = await createUser(email, password);
       console.log(result);
 
-      // 3. Save username and photo in firebase
-      await updateUserProfile(name, image_url);
+      await updateUserProfile(name)
       navigate('/');
       toast.success('Signup Successful');
-    } catch (err: any) {
+    } catch (err) {
       console.log(err);
-      toast.error(err.message);
+   
     } finally {
       setLoading(false);
     }
@@ -70,9 +68,9 @@ const SignUp = () => {
       await signInWithGoogle();
       navigate('/');
       toast.success('Signup Successful');
-    } catch (err: any) {
+    } catch (err) {
       console.log(err);
-      toast.error(err.message);
+      toast.error("plase check mor info");
     }
   };
 
@@ -98,18 +96,7 @@ const SignUp = () => {
                 data-temp-mail-org="0"
               />
             </div>
-            <div>
-              <label htmlFor="image" className="block mb-2 text-sm">
-                Select Image:
-              </label>
-              <input
-                required
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-              />
-            </div>
+        
             <div>
               <label htmlFor="email" className="block mb-2 text-sm">
                 Email address

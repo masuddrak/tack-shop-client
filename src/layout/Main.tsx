@@ -5,7 +5,7 @@ const Main = () => {
   return (
     <main className="relative">
       <Nabver></Nabver>
-      <div className="pt-10 container mx-auto">
+      <div className="pt-11 container mx-auto">
         <Outlet></Outlet>
       </div>
     </main>
